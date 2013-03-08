@@ -32,17 +32,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
-import org.owasp.html.Handler;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.HtmlSanitizer;
-import org.owasp.html.HtmlStreamEventReceiver;
-import org.owasp.html.HtmlStreamRenderer;
-
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
 import com.google.common.io.CharStreams;
+import org.owasp.html.Handler;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.HtmlSanitizer;
+import org.owasp.html.HtmlStreamEventReceiver;
+import org.owasp.html.HtmlStreamRenderer;
 
 /**
  * Based on the
@@ -235,4 +234,21 @@ public class EbayPolicyExample {
 		// Use the policy defined above to sanitize the HTML.
 		HtmlSanitizer.sanitize(html, POLICY_DEFINITION.apply(renderer));
 	}
+
+    public static String sanitize(String input)
+    {
+        StringBuilder output = new StringBuilder();
+        Handler<String> badHtmlHandler = new Handler<String>()
+        {
+            @Override
+            public void handle(String x)
+            {
+                // ignore bad html
+            }
+        };
+        HtmlStreamRenderer renderer = HtmlStreamRenderer.create(output, badHtmlHandler);
+
+        HtmlSanitizer.sanitize(input, POLICY_DEFINITION.apply(renderer));
+        return output.toString();
+    }
 }
