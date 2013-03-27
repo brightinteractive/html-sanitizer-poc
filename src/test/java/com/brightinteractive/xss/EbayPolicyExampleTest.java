@@ -28,4 +28,13 @@ public class EbayPolicyExampleTest
         String sanitized = EbayPolicyExample.sanitize(input);
         assertEquals("<p>Hello World</p>", sanitized);
     }
+
+    @Test
+    public void testTextAllowedInLinks()
+    {
+        String input = "<a href=\"../good.html\">click here</a>";
+        String sanitized = EbayPolicyExample.sanitize(input);
+        assertEquals("<a href=\"../good.html\" rel=\"nofollow\">click here</a>",
+                     sanitized);
+    }
 }
